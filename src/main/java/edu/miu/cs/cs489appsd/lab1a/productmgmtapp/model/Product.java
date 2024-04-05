@@ -1,33 +1,28 @@
 package edu.miu.cs.cs489appsd.lab1a.productmgmtapp.model;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
 
-public class Product implements Comparable<Product>{
+public class Product {
     private String productId;
     private String name;
-    private Date dateSupplied;
+    private LocalDate dateSupplied;
     private int quantityInStock;
     private double unitPrice;
 
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     public Product() {
     }
 
-    public Product(String name, Date dateSupplied, int quantityInStock, double unitPrice) {
+    public Product(String name, LocalDate dateSupplied, int quantityInStock, double unitPrice) {
         this.name = name;
         this.dateSupplied = dateSupplied;
         this.quantityInStock = quantityInStock;
         this.unitPrice = unitPrice;
     }
 
-    public Product(String productId, String name, String dateSupplied, int quantityInStock, double unitPrice) throws ParseException {
+    public Product(String productId, String name, LocalDate dateSupplied, int quantityInStock, double unitPrice){
         this.productId = productId;
         this.name = name;
-        this.dateSupplied = sdf.parse(dateSupplied);
+        this.dateSupplied = dateSupplied;
         this.quantityInStock = quantityInStock;
         this.unitPrice = unitPrice;
     }
@@ -48,11 +43,11 @@ public class Product implements Comparable<Product>{
         this.name = name;
     }
 
-    public Date getDateSupplied() {
+    public LocalDate getDateSupplied() {
         return dateSupplied;
     }
 
-    public void setDateSupplied(Date dateSupplied) {
+    public void setDateSupplied(LocalDate dateSupplied) {
         this.dateSupplied = dateSupplied;
     }
 
@@ -83,8 +78,15 @@ public class Product implements Comparable<Product>{
                 '}';
     }
 
-    @Override
-    public int compareTo(Product other) {
-        return this.name.compareTo(other.name);
+    public String toJson(){
+        return String.format("\t{\"productId\":%s, \"name\":%s, \"dateSupplied\":%s, \"quantityInStock\":%d, \"unitPrice\":%.2f},",this.productId, this.name, this.dateSupplied, this.quantityInStock, this.unitPrice);
+    }
+
+    public String toXML(){
+        return String.format("\t<product productId=%s name=%s dateSupplied=%s quantityInStock=%d unitPrice=%.2f />",this.productId, this.name, this.dateSupplied, this.quantityInStock, this.unitPrice);
+    }
+
+    public String printCSV(){
+        return String.format("%s, %s, %s, %d, %.2f", this.productId, this.name, this.dateSupplied, this.quantityInStock, this.unitPrice);
     }
 }
